@@ -8,21 +8,25 @@ import {
   ScrollView,
   ImageBackground,
   TouchableOpacity,
+  Alert,
 } from 'react-native'
 import { Movie, MovieListProps } from '../types/app'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useNavigation } from '@react-navigation/native'
 import { Feather } from '@expo/vector-icons'
 import MovieList from '../components/movies/MovieList'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const MovieDetail = ({ route }: any): JSX.Element => {
   const { id } = route.params
   const [movieDetail, setMovieDetail] = useState<Movie>()
   const [loading, setLoading] = useState(true)
+  const [isFavorite, setIsFavorite] = useState(false) // State untuk favorit
   const navigation = useNavigation()
 
   useEffect(() => {
     getMovieDetail()
+    checkIsFavorite()
   }, [])
 
   const getMovieDetail = (): void => {
@@ -48,9 +52,78 @@ const MovieDetail = ({ route }: any): JSX.Element => {
       })
   }
 
-  const handleBack = (): void => {
-    navigation.goBack()
+  // favorite
+  const checkIsFavorite = async (): Promise<void> => {
+    try {
+      const storedData: string | null =
+        await AsyncStorage.getItem('@FavoriteList')
+      if (storedData !== null) {
+        const favoriteList: Movie[] = JSON.parse(storedData)
+        const isFav: boolean = favoriteList.some((item) => item.id === id)
+        setIsFavorite(isFav)
+      }
+    } catch (error) {
+      console.log('Error checking favorite:', error)
+    }
   }
+
+  const addFavorite = async (movie: Movie): Promise<void> => {
+    try {
+      const storedData: string | null =
+        await AsyncStorage.getItem('@FavoriteList')
+      let favMovieList: Movie[] = []
+
+      if (storedData !== null) {
+        favMovieList = [...JSON.parse(storedData), movie]
+      } else {
+        favMovieList = [movie]
+      }
+
+      await AsyncStorage.setItem('@FavoriteList', JSON.stringify(favMovieList))
+      setIsFavorite(true)
+      // Alert.alert('Success', 'Added to favorites!')
+    } catch (error) {
+      console.log('Error adding to favorite:', error)
+      // Alert.alert('Error', 'Failed to add to favorites.')
+    }
+  }
+
+  const removeFavorite = async (): Promise<void> => {
+    try {
+      const storedData: string | null =
+        await AsyncStorage.getItem('@FavoriteList')
+
+      if (storedData !== null) {
+        let favMovieList: Movie[] = JSON.parse(storedData)
+        favMovieList = favMovieList.filter((item) => item.id !== id)
+
+        await AsyncStorage.setItem(
+          '@FavoriteList',
+          JSON.stringify(favMovieList),
+        )
+        setIsFavorite(false)
+        // Alert.alert('Success', 'Removed from favorites!')
+      }
+    } catch (error) {
+      console.log(error)
+      // Alert.alert('Error', 'Failed to remove from favorites.')
+    }
+  }
+  const handleFavorite = (event: any): void => {
+    event.persist() // Persist the event to prevent issues with event pooling
+
+    if (isFavorite) {
+      // Remove from favorites
+      removeFavorite()
+    } else {
+      // Add to favorites
+      if (movieDetail) {
+        addFavorite(movieDetail)
+      }
+    }
+  }
+
+  // end favorite
 
   const movieLists: MovieListProps[] = [
     {
@@ -59,6 +132,10 @@ const MovieDetail = ({ route }: any): JSX.Element => {
       coverType: 'poster',
     },
   ]
+
+  const handleBack = (): void => {
+    navigation.goBack()
+  }
 
   return (
     <>
@@ -86,12 +163,26 @@ const MovieDetail = ({ route }: any): JSX.Element => {
               locations={[0.6, 0.8]}
               style={styles.gradientStyle}
             >
-              <Text style={styles.movieTitle}>{movieDetail?.title}</Text>
-              <View style={styles.ratingContainer}>
-                <FontAwesome name="star" size={16} color="yellow" />
-                <Text style={styles.rating}>
-                  {movieDetail?.vote_average.toFixed(1)}
-                </Text>
+              <View style={styles.rowBgTop}>
+                <View style={styles.colBgTop}>
+                  <Text style={styles.movieTitle}>{movieDetail?.title}</Text>
+                  <View style={styles.ratingContainer}>
+                    <FontAwesome name="star" size={16} color="yellow" />
+                    <Text style={styles.rating}>
+                      {movieDetail?.vote_average.toFixed(1)}
+                    </Text>
+                  </View>
+                </View>
+                <TouchableOpacity
+                  onPress={handleFavorite}
+                  style={styles.coverIcon}
+                >
+                  <FontAwesome
+                    name={isFavorite ? 'heart' : 'heart-o'}
+                    size={28}
+                    color="pink"
+                  />
+                </TouchableOpacity>
               </View>
             </LinearGradient>
           </ImageBackground>
@@ -206,6 +297,19 @@ const styles = StyleSheet.create({
   movieListsContainer: {
     marginTop: 32,
     paddingHorizontal: 16,
+  },
+  rowBgTop: {
+    flexDirection: 'row',
+    paddingHorizontal: 12,
+    alignItems: 'flex-end',
+    justifyContent: 'space-between',
+  },
+  colBgTop: {
+    flex: 1,
+  },
+  coverIcon: {
+    textAlign: 'right',
+    marginBottom: 12,
   },
 })
 
