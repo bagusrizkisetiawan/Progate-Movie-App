@@ -10,8 +10,8 @@ const HomeStackNavigation = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Home"
-        component={Home}
+        name="Favorite"
+        component={Favorite}
         options={{
           headerShown: false,
         }}
@@ -19,13 +19,6 @@ const HomeStackNavigation = () => {
       <Stack.Screen
         name="MovieDetail"
         component={MovieDetail}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="Favorite"
-        component={Favorite}
         options={{
           headerShown: false,
         }}
