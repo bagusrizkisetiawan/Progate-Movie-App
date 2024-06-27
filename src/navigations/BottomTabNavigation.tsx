@@ -10,7 +10,7 @@ const Tab = createBottomTabNavigator()
 const BottomTabNavigator = () => (
   <Tab.Navigator>
     <Tab.Screen
-      name="HomeStacNavigation"
+      name="Home"
       component={HomeStackNavigation}
       options={{
         tabBarIcon: ({ color }) => (
