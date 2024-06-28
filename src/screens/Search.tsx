@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
+    paddingBottom: 12,
   },
   topBar: {
     alignItems: 'center',

@@ -31,15 +31,8 @@ const KeywordSearch = () => {
     fetch(url, options)
       .then(async (response) => await response.json())
       .then((response) => {
-        const movies = response.results.map((movie: any) => ({
-          id: movie.id,
-          title: movie.title,
-          posterPath: movie.poster_path,
-          overview: movie.overview,
-          releaseDate: movie.release_date,
-        }))
+        const movies = response.results
         // console.log(movies)
-
         setMovieLists(movies)
       })
       .catch((errorResponse) => {
@@ -80,7 +73,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 12,
+    paddingBottom: 120,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -100,13 +93,14 @@ const styles = StyleSheet.create({
   movieItem: {
     width: 110,
     height: 200,
-    marginHorizontal: 4,
+    marginHorizontal: 8,
     marginBottom: 8,
   },
   rowItem: {
+    marginTop: 12,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
   },
 })
 
