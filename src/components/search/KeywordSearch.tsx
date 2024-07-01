@@ -68,12 +68,14 @@ const KeywordSearch = () => {
         ) : (
           <View style={styles.rowItem}>
             {movieLists.map((movie) => (
-              <MovieItem
-                key={movie.id}
-                movie={movie}
-                size={styles.movieItem}
-                coverType="poster"
-              />
+              <View style={styles.colItem}>
+                <MovieItem
+                  key={movie.id}
+                  movie={movie}
+                  size={styles.movieItem}
+                  coverType="poster"
+                />
+              </View>
             ))}
           </View>
         )}
@@ -87,7 +89,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 120,
+    paddingBottom: 110,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -105,16 +107,20 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   movieItem: {
-    width: 110,
-    height: 200,
-    marginHorizontal: 8,
-    marginBottom: 8,
+    width: 104,
+    height: 180,
   },
   rowItem: {
+    width: '100%',
     marginTop: 12,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
+  },
+  colItem: {
+    width: '33.33%',
+    marginBottom: 12,
+    alignItems: 'center',
   },
   loading: {
     marginTop: 20,

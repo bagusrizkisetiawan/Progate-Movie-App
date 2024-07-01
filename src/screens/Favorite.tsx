@@ -64,9 +64,8 @@ const Favorite = (): JSX.Element => {
 const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
-    backgroundColor: '#f0f0f0',
-    padding: 16,
-    elevation: 3,
+    backgroundColor: '',
+    padding: 18,
   },
   headerTitle: {
     fontSize: 20,
@@ -74,11 +73,10 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     paddingHorizontal: 16,
   },
   movieItem: {
-    width: 110,
+    width: 100,
     height: 200,
     marginHorizontal: 4,
     marginBottom: 8,
@@ -92,7 +90,7 @@ const styles = StyleSheet.create({
     flex: 3,
     margin: 8,
     flexWrap: 'wrap',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     flexDirection: 'row',
   },
 })
