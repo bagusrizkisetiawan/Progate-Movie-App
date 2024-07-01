@@ -21,6 +21,7 @@ const MovieDetail = ({ route }: any): JSX.Element => {
   const { id } = route.params
   const [movieDetail, setMovieDetail] = useState<Movie>()
   const [loading, setLoading] = useState(true)
+
   const [isFavorite, setIsFavorite] = useState(false) // State untuk favorit
   const navigation = useNavigation()
 
@@ -42,7 +43,7 @@ const MovieDetail = ({ route }: any): JSX.Element => {
     fetch(url, options)
       .then(async (response) => await response.json())
       .then((response) => {
-        console.log(response)
+        // console.log(response)
         setMovieDetail(response)
         setLoading(false)
       })
@@ -81,10 +82,10 @@ const MovieDetail = ({ route }: any): JSX.Element => {
 
       await AsyncStorage.setItem('@FavoriteList', JSON.stringify(favMovieList))
       setIsFavorite(true)
-      // Alert.alert('Success', 'Added to favorites!')
+      // console.log('Success', 'Added to favorites!')
     } catch (error) {
       console.log('Error adding to favorite:', error)
-      // Alert.alert('Error', 'Failed to add to favorites.')
+      // console.log('Error', 'Failed to add to favorites.')
     }
   }
 
@@ -102,11 +103,11 @@ const MovieDetail = ({ route }: any): JSX.Element => {
           JSON.stringify(favMovieList),
         )
         setIsFavorite(false)
-        // Alert.alert('Success', 'Removed from favorites!')
+        // console.log('Success', 'Removed from favorites!')
       }
     } catch (error) {
       console.log(error)
-      // Alert.alert('Error', 'Failed to remove from favorites.')
+      // console.log('Error', 'Failed to remove from favorites.')
     }
   }
   const handleFavorite = (event: any): void => {
@@ -155,7 +156,7 @@ const MovieDetail = ({ route }: any): JSX.Element => {
             resizeMode="cover"
             style={styles.backgroundImage}
             source={{
-              uri: `https://image.tmdb.org/t/p/w500${movieDetail?.backdrop_path || movieDetail?.poster_path}`,
+              uri: `https://image.tmdb.org/t/p/w500${movieDetail?.backdrop_path}`,
             }}
           >
             <LinearGradient

@@ -8,7 +8,7 @@ import { useFocusEffect } from '@react-navigation/native'
 const Favorite = (): JSX.Element => {
   const [favoriteMovies, setFavoriteMovies] = useState<Movie[]>([])
 
-  // Memuat favorit saat komponen dimuat atau halaman difokuskan
+  // Memuat favorit
   useEffect(() => {
     fetchFavoriteMovies()
   }, [])
