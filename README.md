@@ -3,14 +3,25 @@
 Movie App adalah aplikasi React Native yang memungkinkan pengguna untuk mencari film berdasarkan kata kunci, mencari film berdasarkan kategori, dan menandai film sebagai favorit. Aplikasi ini menggunakan API dari The Movie Database (TMDb) untuk memperoleh data film.
 
 ## Team
-- Bagus Rizki Setiawan
-- Ahza Rijas Mezzalaji
+- **Bagus Rizki Setiawan**
+- **Ahza Rijas Mezzalaji**
 
 ## Fitur
 
 1. **Pencarian Berdasarkan Kata Kunci**: Pengguna dapat mencari film dengan memasukkan kata kunci tertentu.
 2. **Pencarian Berdasarkan Kategori**: Pengguna dapat mencari film berdasarkan genre atau kategori tertentu.
 3. **Favorit**: Pengguna dapat menandai film sebagai favorit dan melihat daftar film favorit mereka.
+
+## Teknologi yang Digunakan
+
+- **React Native:** Untuk membuat antarmuka pengguna aplikasi mobile.
+- **TypeScript:** Untuk memberikan tipe data statis pada JavaScript.
+- **React Navigation:** Untuk navigasi antar layar.
+- **AsyncStorage:** Untuk menyimpan data favorit secara lokal di perangkat pengguna.
+- **TMDb API:** Untuk mendapatkan data film.
+- **Expo LinearGradient:** Untuk memberikan efek gradasi pada gambar latar belakang.
+- **Expo Vector Icons:** Untuk ikon-ikon pada aplikasi.
+
 
 ## Prasyarat
 
