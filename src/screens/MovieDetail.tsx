@@ -82,10 +82,10 @@ const MovieDetail = ({ route }: any): JSX.Element => {
 
       await AsyncStorage.setItem('@FavoriteList', JSON.stringify(favMovieList))
       setIsFavorite(true)
-      // Alert.alert('Success', 'Added to favorites!')
+      // console.log('Success', 'Added to favorites!')
     } catch (error) {
       console.log('Error adding to favorite:', error)
-      // Alert.alert('Error', 'Failed to add to favorites.')
+      // console.log('Error', 'Failed to add to favorites.')
     }
   }
 
@@ -103,11 +103,11 @@ const MovieDetail = ({ route }: any): JSX.Element => {
           JSON.stringify(favMovieList),
         )
         setIsFavorite(false)
-        // Alert.alert('Success', 'Removed from favorites!')
+        // console.log('Success', 'Removed from favorites!')
       }
     } catch (error) {
       console.log(error)
-      // Alert.alert('Error', 'Failed to remove from favorites.')
+      // console.log('Error', 'Failed to remove from favorites.')
     }
   }
   const handleFavorite = (event: any): void => {

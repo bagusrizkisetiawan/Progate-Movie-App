@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { View, TextInput, StyleSheet, ScrollView } from 'react-native'
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import { Movie } from '../../types/app'
 import { API_ACCESS_TOKEN } from '@env'
@@ -8,17 +14,18 @@ import MovieItem from '../movies/MovieItem'
 const KeywordSearch = () => {
   const [keyword, setKeyword] = useState('')
   const [movieLists, setMovieLists] = useState<Movie[]>([])
-
-  const handleSubmit = () => {
-    console.log('Submitted keyword:', keyword)
-    getMovieList()
-  }
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    getMovieList()
-  }, [])
+    if (keyword.trim()) {
+      getMovieList()
+    } else {
+      setMovieLists([])
+    }
+  }, [keyword])
 
-  const getMovieList = (): void => {
+  const getMovieList = async (): Promise<void> => {
+    setIsLoading(true)
     const url = `https://api.themoviedb.org/3/search/movie?query=${keyword}`
     const options = {
       method: 'GET',
@@ -28,16 +35,15 @@ const KeywordSearch = () => {
       },
     }
 
-    fetch(url, options)
-      .then(async (response) => await response.json())
-      .then((response) => {
-        const movies = response.results
-        // console.log(movies)
-        setMovieLists(movies)
-      })
-      .catch((errorResponse) => {
-        console.log(errorResponse)
-      })
+    try {
+      const response = await fetch(url, options)
+      const data = await response.json()
+      setMovieLists(data.results)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -49,20 +55,28 @@ const KeywordSearch = () => {
             placeholder="Input title movie here"
             value={keyword}
             onChangeText={setKeyword}
-            onSubmitEditing={handleSubmit}
           />
           <Feather name="search" size={24} color="gray" style={styles.icon} />
         </View>
 
-        <View style={styles.rowItem}>
-          {movieLists.map((movie) => (
-            <MovieItem
-              movie={movie}
-              size={styles.movieItem}
-              coverType="poster"
-            />
-          ))}
-        </View>
+        {isLoading ? (
+          <ActivityIndicator
+            size="large"
+            color="#8978A4"
+            style={styles.loading}
+          />
+        ) : (
+          <View style={styles.rowItem}>
+            {movieLists.map((movie) => (
+              <MovieItem
+                key={movie.id}
+                movie={movie}
+                size={styles.movieItem}
+                coverType="poster"
+              />
+            ))}
+          </View>
+        )}
       </View>
     </ScrollView>
   )
@@ -101,6 +115,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
+  },
+  loading: {
+    marginTop: 20,
   },
 })
 
