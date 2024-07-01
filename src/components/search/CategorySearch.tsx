@@ -83,14 +83,16 @@ const CategorySearch = () => {
           </TouchableOpacity>
         ))}
       </View>
-      <View style={styles.moviesContainer}>
+      <View style={styles.rowMovie}>
         {movies.map((movie) => (
-          <MovieItem
-            key={movie.id}
-            movie={movie}
-            size={styles.movieItem}
-            coverType="poster"
-          />
+          <View style={styles.colItem}>
+            <MovieItem
+              key={movie.id}
+              movie={movie}
+              size={styles.movieItem}
+              coverType="poster"
+            />
+          </View>
         ))}
       </View>
     </ScrollView>
@@ -100,7 +102,7 @@ const CategorySearch = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    marginHorizontal: 8,
   },
   title: {
     fontSize: 24,
@@ -127,15 +129,20 @@ const styles = StyleSheet.create({
   genreText: {
     color: '#fff',
   },
-  moviesContainer: {
+  rowMovie: {
+    width: '100%',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
+  },
+  colItem: {
+    width: '33%',
+    marginBottom: 12,
+    alignItems: 'center',
   },
   movieItem: {
-    width: 110,
-    height: 200,
-    marginBottom: 16,
+    width: 104,
+    height: 180,
   },
 })
 
